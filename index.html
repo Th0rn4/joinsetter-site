@@ -362,7 +362,11 @@
     e.preventDefault();
     const btn = f.querySelector("button");
     btn.disabled = true; btn.textContent = "Booking…";
-    try { if (DEMO_ENDPOINT) await fetch(DEMO_ENDPOINT, { method: "POST", mode: "no-cors", body: new URLSearchParams(new FormData(f)) }); } catch (_) {}
+    if (!DEMO_ENDPOINT) {   // never pretend: until the backend is live, say so
+      ok.textContent = "The live demo is being switched on. Email reuben@joinsetter.com and I'll send it to you personally.";
+      ok.style.display = "block"; btn.textContent = "Book my demo call"; btn.disabled = false; return;
+    }
+    try { await fetch(DEMO_ENDPOINT, { method: "POST", mode: "no-cors", body: new URLSearchParams(new FormData(f)) }); } catch (_) {}
     ok.style.display = "block"; btn.textContent = "Booked";
   });
 </script>
